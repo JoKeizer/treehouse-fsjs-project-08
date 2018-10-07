@@ -11,12 +11,14 @@ router.get('/', function(req, res, next) {
 
 /* GET new books form listing. */
 router.get('/new', function(req, res, next) {
-  res.render('new-book',  { title: 'New Book' });
+  res.render('new-book',  { title: 'New Book', book: Book.build() });
 });
 
 /* POST new books form listing. */
 router.post('/new', function(req, res, next) {
-  res.render('new-book',  { title: 'New Book' });
+  Book.create(req.body).then( book =>{
+    res.redirect(`/books/`);
+  });
 });
 
 /* GET books by id listing. */
@@ -29,12 +31,24 @@ router.get('/:id', function(req, res, next) {
 
 /* POST books by id listing. */
 router.post('/:id', function(req, res, next) {
-  res.render('update-book',  { title: 'Update Book' });
+  Book.findById(req.params.id)
+  .then(book =>{
+    return book.update(req.body);
+  })
+  .then(() =>{
+    res.redirect('/books/');
+  });
 });
 
 /* POST books by id listing. */
 router.post('/:id/delete', function(req, res, next) {
-  res.render('update-book',  { title: 'Delete Book' });
+  Book.findById(req.params.id)
+  .then(book =>{
+    return book.destroy();
+  })
+  .then(() =>{
+    res.redirect('/books/');
+  });
 });
 
 module.exports = router;
