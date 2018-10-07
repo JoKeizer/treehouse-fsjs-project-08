@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const Book = require("../models").Book;
 
 /* GET books listing. */
 router.get('/', function(req, res, next) {
-  res.render('index',  { title: 'All Books' });
+  Book.findAll().then( books =>{
+    res.render('index',  { title: 'All Books', books });
+  });
 });
 
 /* GET new books form listing. */
@@ -18,7 +21,10 @@ router.post('/new', function(req, res, next) {
 
 /* GET books by id listing. */
 router.get('/:id', function(req, res, next) {
-  res.render('update-book',  { title: 'Update Book' });
+  Book.findById(req.params.id).then( book =>{
+    console.log(book);
+    res.render('update-book',  { title: 'Update Book', book });
+  });
 });
 
 /* POST books by id listing. */
