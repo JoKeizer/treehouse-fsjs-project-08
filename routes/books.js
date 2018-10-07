@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET books listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('index',  { title: 'All Books' });
 });
 
 module.exports = router;
