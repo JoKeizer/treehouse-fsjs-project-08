@@ -36,7 +36,7 @@ router.get('/:id', (req, res, next) =>{
     book ? res.render('update-book',  { title: 'Update Book', book }) : (
       error = new Error('Page Not Found'),
       error.status=404,
-      res.render('error',{error})
+      res.render('error',{error, title: `${error.status}-${error.message}`})
 );
   })
   .catch(error => res.sendStatus(500, error));
