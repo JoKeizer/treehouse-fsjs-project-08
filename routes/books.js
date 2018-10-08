@@ -4,7 +4,11 @@ const Book = require("../models").Book;
 
 /* GET books listing. */
 router.get('/', (req, res, next) =>{
-  Book.findAll().then( books =>{
+  Book.findAll({
+    order: [["title", "ASC"]],
+    limit: 5
+  })
+  .then( books =>{
     res.render('index',  { title: 'All Books', books });
   });
 });
