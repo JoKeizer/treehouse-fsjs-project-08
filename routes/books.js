@@ -33,7 +33,11 @@ router.post('/new', (req, res, next) => {
 /* GET READ books by id. */
 router.get('/:id', (req, res, next) =>{
   Book.findById(req.params.id).then( book =>{ 
-    book ? res.render('update-book',  { title: 'Update Book', book }) : res.sendStatus(404);
+    book ? res.render('update-book',  { title: 'Update Book', book }) : (
+      error = new Error('Page Not Found'),
+      error.status=404,
+      res.render('error',{error})
+);
   })
   .catch(error => res.sendStatus(500, error));
 });
