@@ -20,9 +20,16 @@ router.post('/search', (req, res, next) => {
     offset: 0,
     limit: 5,
     where: {
-      
+      [Op.or]: [
+        { title:  {[Op.like]: `%${req.body}%`} },
+        { author: {[Op.like]: `%${req.body}%`} },
+        { genre:  {[Op.like]: `%${req.body}%`} }
+      ]
     }
   })
+  .then( books =>{
+    res.render('index',  { title: 'All Books', books });
+  });
 })
 
 /* GET new books form listing. */
