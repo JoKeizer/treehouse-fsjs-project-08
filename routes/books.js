@@ -5,10 +5,13 @@ const Book = require("../models").Book;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const bodyParser= require('body-parser');
+router.use(bodyParser.urlencoded({extended:true}))
+
 /* GET books listing. */
 router.get('/', (req, res, next) => {
   Book.findAll({
-    order: [["title", "ASC"]],
+    order: [["title", "ASC"]]
   })
   .then( books =>{
     res.render('index',  { title: 'All Books', books });
@@ -17,18 +20,16 @@ router.get('/', (req, res, next) => {
 
 router.post('/search', (req, res, next) => {
   Book.findAll({
-    offset: 0,
-    limit: 5,
     where: {
       [Op.or]: [
-        { title:  {[Op.like]: `%${req.body}%`} },
-        { author: {[Op.like]: `%${req.body}%`} },
-        { genre:  {[Op.like]: `%${req.body}%`} }
+        { title:  { [Op.like]: `%${req.body.search}%` }},
+        { author: { [Op.like]: `%${req.body.search}%` }},
+        { genre:  { [Op.like]: `%${req.body.search}%` }}
       ]
     }
   })
   .then( books =>{
-    res.render('index',  { title: 'All Books', books });
+    res.render('index',  { title: 'Search Results', books });
   });
 })
 
