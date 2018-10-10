@@ -2,16 +2,28 @@ const express = require('express');
 const router = express.Router();
 const Book = require("../models").Book;
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 /* GET books listing. */
-router.get('/', (req, res, next) =>{
+router.get('/', (req, res, next) => {
   Book.findAll({
     order: [["title", "ASC"]],
-    limit: 5
   })
   .then( books =>{
     res.render('index',  { title: 'All Books', books });
   });
 });
+
+router.post('/search', (req, res, next) => {
+  Book.findAll({
+    offset: 0,
+    limit: 5,
+    where: {
+      
+    }
+  })
+})
 
 /* GET new books form listing. */
 router.get('/new', (req, res, next) => res.render('new-book',  { title: 'New Book', book: Book.build() }) );
